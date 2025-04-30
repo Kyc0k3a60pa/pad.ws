@@ -8,8 +8,8 @@ Create Date: 2025-04-30 03:56:33.469180
 from typing import Sequence, Union
 
 from alembic import op
-import sqlalchemy as sa
 
+from database.config import DatabaseConfig
 
 # revision identifiers, used by Alembic.
 revision: str = '0ed2c80b0270'
@@ -19,7 +19,7 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade():
-    op.execute('CREATE SCHEMA IF NOT EXISTS padws')
+    op.execute(f'CREATE SCHEMA IF NOT EXISTS {DatabaseConfig.APP_SCHEMA_NAME}')
     
 def downgrade():
-    op.execute('DROP SCHEMA IF EXISTS padws CASCADE')
+    op.execute(f'DROP SCHEMA IF EXISTS {DatabaseConfig.APP_SCHEMA_NAME} CASCADE')

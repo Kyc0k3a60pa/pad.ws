@@ -10,6 +10,8 @@ from typing import Sequence, Union
 from alembic import op
 import sqlalchemy as sa
 
+from database.config import DatabaseConfig
+
 # revision identifiers, used by Alembic.
 revision: str = '46c1edc1a40a'
 down_revision: Union[str, None] = '0ed2c80b0270'
@@ -28,7 +30,7 @@ def upgrade() -> None:
     sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('username'),
-    schema='padws'
+    schema=DatabaseConfig.APP_SCHEMA_NAME
     )
     op.create_table('pads',
     sa.Column('user_id', sa.UUID(), nullable=False),
@@ -38,7 +40,7 @@ def upgrade() -> None:
     sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['padws.users.id'], ),
     sa.PrimaryKeyConstraint('id'),
-    schema='padws'
+    schema=DatabaseConfig.APP_SCHEMA_NAME
     )
     op.create_table('backups',
     sa.Column('pad_id', sa.UUID(), nullable=False),
@@ -48,12 +50,12 @@ def upgrade() -> None:
     sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.ForeignKeyConstraint(['pad_id'], ['padws.pads.id'], ),
     sa.PrimaryKeyConstraint('id'),
-    schema='padws'
+    schema=DatabaseConfig.APP_SCHEMA_NAME
     )
 
 
 def downgrade() -> None:
     """Downgrade schema."""
-    op.drop_table('backups', schema='padws')
-    op.drop_table('pads', schema='padws')
-    op.drop_table('users', schema='padws')
+    op.drop_table('backups', schema=DatabaseConfig.APP_SCHEMA_NAME)
+    op.drop_table('pads', schema=DatabaseConfig.APP_SCHEMA_NAME)
+    op.drop_table('users', schema=DatabaseConfig.APP_SCHEMA_NAME)

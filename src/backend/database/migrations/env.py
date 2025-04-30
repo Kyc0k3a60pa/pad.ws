@@ -7,15 +7,15 @@ from dotenv import load_dotenv
 from alembic import context
 from sqlalchemy import create_engine, text
 
-# Add the database directory to the Python path
-database_dir = Path(__file__).parent.parent
-sys.path.insert(0, str(database_dir))
+# Add the backend directory to the Python path
+backend_dir = Path(__file__).parent.parent.parent  # Navigate to backend/
+sys.path.insert(0, str(backend_dir))
 
 # Import from the models package
-from models.base_model import Base
-from models.user_model import User
-from models.pad_model import Pad
-from models.backup_model import Backup
+from database.models.base_model import Base
+from database.models.user_model import User
+from database.models.pad_model import Pad
+from database.models.backup_model import Backup
 
 # Load environment variables
 load_dotenv()
