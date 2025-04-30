@@ -32,26 +32,26 @@ def upgrade():
     canvas_users = connection.execute(text(f"SELECT user_id FROM {schema}.canvas_data")).fetchall()
     
     for user_row in canvas_users:
-        jwt_token_id = user_row[0]
+        jwt_id = user_row[0]
         migration_email = f"migration_required"
         
         # Insert into new users table
         connection.execute(
-            text("INSERT INTO padws.users (id, username, email, jwt_token_id, created_at, updated_at) VALUES (:id, :username, :email, :jwt_token_id, NOW(), NOW())"),
-            {"id": str(uuid4()), "username": None, "email": migration_email, "jwt_token_id": jwt_token_id}
+            text("INSERT INTO padws.users (id, username, email, jwt_id, created_at, updated_at) VALUES (:id, :username, :email, :jwt_id, NOW(), NOW())"),
+            {"id": str(uuid4()), "username": None, "email": migration_email, "jwt_id": jwt_id}
         )
         
         # Get the inserted user's ID
         new_user_id = connection.execute(
-            text(f"SELECT id FROM {schema}.users WHERE jwt_token_id = :jwt_token_id"),
-            {"jwt_token_id": jwt_token_id}
+            text(f"SELECT id FROM {schema}.users WHERE jwt_id = :jwt_id"),
+            {"jwt_id": jwt_id}
 
         ).scalar()
         
         # 2. Migrate pad data
         canvas_data = connection.execute(
             text(f"SELECT data, updated_at FROM {schema}.canvas_data WHERE user_id = :user_id"),
-            {"user_id": jwt_token_id}
+            {"user_id": jwt_id}
         ).fetchone()
         
         if canvas_data:
@@ -79,7 +79,7 @@ def upgrade():
             # 3. Migrate backups
             backups = connection.execute(
                 text(f"SELECT canvas_data, timestamp FROM {schema}.canvas_backups WHERE user_id = :user_id ORDER BY timestamp"),
-                {"user_id": jwt_token_id}
+                {"user_id": jwt_id}
             ).fetchall()
             
             for backup in backups:

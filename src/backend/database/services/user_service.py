@@ -11,30 +11,30 @@ class UserService:
         self.user_repo = UserRepository(session)
         self.pad_repo = PadRepository(session)
     
-    async def get_user_by_jwt_token_id(self, jwt_token_id: str) -> Optional[Dict[str, Any]]:
-        """Get a user by JWT token ID"""
-        user = await self.user_repo.get_by_jwt_token_id(jwt_token_id)
+    async def get_user_by_jwt_id(self, jwt_id: str) -> Optional[Dict[str, Any]]:
+        """Get a user by JWT ID"""
+        user = await self.user_repo.get_by_jwt_id(jwt_id)
         if user:
             return {
                 "id": str(user.id),
                 "username": user.username,
                 "email": user.email,
-                "jwt_token_id": user.jwt_token_id,
+                "jwt_id": user.jwt_id,
                 "created_at": user.created_at,
                 "updated_at": user.updated_at
             }
         return None
     
-    async def get_or_create_user_by_jwt_token_id(
-        self, jwt_token_id: str, email: str, username: Optional[str] = None
+    async def get_or_create_user_by_jwt_id(
+        self, jwt_id: str, email: str, username: Optional[str] = None
     ) -> Optional[Dict[str, Any]]:
-        """Get a user by JWT token ID or create if not exists"""
-        user = await self.user_repo.get_by_jwt_token_id(jwt_token_id)
+        """Get a user by JWT ID or create if not exists"""
+        user = await self.user_repo.get_by_jwt_id(jwt_id)
         
         if not user:
             # Create new user
             user = await self.user_repo.create(
-                jwt_token_id=jwt_token_id,
+                jwt_id=jwt_id,
                 email=email,
                 username=username
             )
@@ -46,7 +46,7 @@ class UserService:
             "id": str(user.id),
             "username": user.username,
             "email": user.email,
-            "jwt_token_id": user.jwt_token_id,
+            "jwt_id": user.jwt_id,
             "created_at": user.created_at,
             "updated_at": user.updated_at
         }

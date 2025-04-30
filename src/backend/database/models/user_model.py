@@ -11,7 +11,7 @@ class User(TimestampedBase):
     
     username = Column(String, nullable=True, unique=True)
     email = Column(String, nullable=False)
-    jwt_token_id = Column(String, nullable=True, unique=True)
+    jwt_id = Column(String, nullable=True, unique=True)
     
     pads = relationship("Pad", back_populates="user", cascade="all, delete-orphan")
     

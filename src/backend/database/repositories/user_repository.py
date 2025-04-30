@@ -31,14 +31,14 @@ class UserRepository(BaseRepository[User]):
             print(f"Error retrieving user by email: {e}")
             return None
         
-    async def get_by_jwt_token_id(self, jwt_token_id: str) -> Optional[User]:
-        """Get a user by JWT token ID"""
+    async def get_by_jwt_id(self, jwt_id: str) -> Optional[User]:
+        """Get a user by JWT ID"""
         try:
-            stmt = select(User).where(User.jwt_token_id == jwt_token_id)
+            stmt = select(User).where(User.jwt_id == jwt_id)
             result = await self.session.execute(stmt)
             return result.scalars().first()
         except Exception as e:
-            print(f"Error retrieving user by JWT token ID: {e}")
+            print(f"Error retrieving user by JWT ID: {e}")
             return None
 
     async def get_all_pads_by_user_id(self, user_id: UUID) -> List[Pad]:
