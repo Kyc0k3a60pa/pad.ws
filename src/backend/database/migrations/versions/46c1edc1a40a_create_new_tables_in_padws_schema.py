@@ -18,6 +18,7 @@ down_revision: Union[str, None] = '0ed2c80b0270'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
+schema_name = DatabaseConfig.get_schema_name()
 
 def upgrade() -> None:
     """Upgrade schema."""
@@ -30,7 +31,7 @@ def upgrade() -> None:
     sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('username'),
-    schema=DatabaseConfig.APP_SCHEMA_NAME
+    schema=schema_name
     )
     op.create_table('pads',
     sa.Column('user_id', sa.UUID(), nullable=False),
@@ -40,7 +41,7 @@ def upgrade() -> None:
     sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['padws.users.id'], ),
     sa.PrimaryKeyConstraint('id'),
-    schema=DatabaseConfig.APP_SCHEMA_NAME
+    schema=schema_name
     )
     op.create_table('backups',
     sa.Column('pad_id', sa.UUID(), nullable=False),
@@ -50,12 +51,12 @@ def upgrade() -> None:
     sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.ForeignKeyConstraint(['pad_id'], ['padws.pads.id'], ),
     sa.PrimaryKeyConstraint('id'),
-    schema=DatabaseConfig.APP_SCHEMA_NAME
+    schema=schema_name
     )
 
 
 def downgrade() -> None:
     """Downgrade schema."""
-    op.drop_table('backups', schema=DatabaseConfig.APP_SCHEMA_NAME)
-    op.drop_table('pads', schema=DatabaseConfig.APP_SCHEMA_NAME)
-    op.drop_table('users', schema=DatabaseConfig.APP_SCHEMA_NAME)
+    op.drop_table('backups', schema=schema_name)
+    op.drop_table('pads', schema=schema_name)
+    op.drop_table('users', schema=schema_name)

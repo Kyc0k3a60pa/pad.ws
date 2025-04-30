@@ -4,12 +4,14 @@ from sqlalchemy.orm import relationship
 from .base_model import TimestampedBase
 from ..config import DatabaseConfig
 
+schema_name = DatabaseConfig.get_schema_name()
+
 class BackupModel(TimestampedBase):
     """Model for backups table in padws schema"""
     __tablename__ = "backups"
-    __table_args__ = {"schema": DatabaseConfig.APP_SCHEMA_NAME}
+    __table_args__ = {"schema": schema_name}
     
-    pad_id = Column(UUID(as_uuid=True), ForeignKey(f"{DatabaseConfig.APP_SCHEMA_NAME}.pads.id"), nullable=False)
+    pad_id = Column(UUID(as_uuid=True), ForeignKey(f"{schema_name}.pads.id"), nullable=False)
     data = Column(JSON, nullable=False)
     
     pad = relationship("PadModel", back_populates="backups")

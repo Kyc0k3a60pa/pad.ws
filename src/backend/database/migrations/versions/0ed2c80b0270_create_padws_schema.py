@@ -17,9 +17,10 @@ down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
+schema_name = DatabaseConfig.get_schema_name()
 
 def upgrade():
-    op.execute(f'CREATE SCHEMA IF NOT EXISTS {DatabaseConfig.APP_SCHEMA_NAME}')
+    op.execute(f'CREATE SCHEMA IF NOT EXISTS {schema_name}')
     
 def downgrade():
-    op.execute(f'DROP SCHEMA IF EXISTS {DatabaseConfig.APP_SCHEMA_NAME} CASCADE')
+    op.execute(f'DROP SCHEMA IF EXISTS {schema_name} CASCADE')

@@ -4,10 +4,12 @@ from sqlalchemy.orm import relationship
 from .base_model import TimestampedBase
 from ..config import DatabaseConfig
 
+schema_name = DatabaseConfig.get_schema_name()
+
 class UserModel(TimestampedBase):
     """Model for users table in padws schema"""
     __tablename__ = "users"
-    __table_args__ = {"schema": DatabaseConfig.APP_SCHEMA_NAME}
+    __table_args__ = {"schema": schema_name}
     
     username = Column(String, nullable=True, unique=True)
     email = Column(String, nullable=False)
