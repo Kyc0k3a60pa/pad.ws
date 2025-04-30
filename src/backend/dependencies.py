@@ -1,7 +1,12 @@
 from typing import Optional
 from fastapi import Request, HTTPException, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from config import sessions
+from database.interface import get_db_session
+from database.services.user_service import UserService
+from database.services.pad_service import PadService
+from database.services.backup_service import BackupService
 
 class SessionData:
     def __init__(self, access_token: str, token_data: dict):
@@ -33,3 +38,13 @@ class AuthDependency:
 # Create instances for use in route handlers
 require_auth = AuthDependency(auto_error=True)
 optional_auth = AuthDependency(auto_error=False)
+
+# Service dependencies
+async def get_user_service(session: AsyncSession = Depends(get_db_session)) -> UserService:
+    return UserService(session)
+
+async def get_pad_service(session: AsyncSession = Depends(get_db_session)) -> PadService:
+    return PadService(session)
+
+async def get_backup_service(session: AsyncSession = Depends(get_db_session)) -> BackupService:
+    return BackupService(session)

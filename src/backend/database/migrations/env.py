@@ -12,10 +12,10 @@ database_dir = Path(__file__).parent.parent
 sys.path.insert(0, str(database_dir))
 
 # Import from the models package
-from models.base import Base
-from models.user import User
-from models.pad import Pad
-from models.backup import Backup
+from models.base_model import Base
+from models.user_model import User
+from models.pad_model import Pad
+from models.backup_model import Backup
 
 # Load environment variables
 load_dotenv()

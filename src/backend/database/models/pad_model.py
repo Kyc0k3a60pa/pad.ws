@@ -1,7 +1,7 @@
 from sqlalchemy import Column, String, JSON, ForeignKey, UUID
 from sqlalchemy.orm import relationship
 
-from .base import TimestampedBase
+from .base_model import TimestampedBase
 
 class Pad(TimestampedBase):
     """Model for pads table in padws schema"""

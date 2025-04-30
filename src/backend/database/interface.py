@@ -41,7 +41,7 @@ async def get_db_session() -> AsyncGenerator[AsyncSession, None]:
 async def init_db() -> None:
     """Initialize the database with required tables and schema"""
     # Import here to avoid circular imports
-    from .models.base import Base
+    from .models.base_model import Base
     
     async with engine.begin() as conn:
         # Create padws schema if it doesn't exist

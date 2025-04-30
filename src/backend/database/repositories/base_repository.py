@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy import update, delete
 
-from ..models.base import TimestampedBase
+from ..models.base_model import TimestampedBase
 
 T = TypeVar('T', bound=TimestampedBase)
 

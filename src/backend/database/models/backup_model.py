@@ -1,7 +1,7 @@
 from sqlalchemy import Column, JSON, ForeignKey, UUID
 from sqlalchemy.orm import relationship
 
-from .base import TimestampedBase
+from .base_model import TimestampedBase
 
 class Backup(TimestampedBase):
     """Model for backups table in padws schema"""

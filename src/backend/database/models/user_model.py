@@ -1,7 +1,7 @@
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 
-from .base import TimestampedBase
+from .base_model import TimestampedBase
 
 class User(TimestampedBase):
     """Model for users table in padws schema"""

@@ -3,8 +3,8 @@ from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from ..models.backup import Backup
-from .base import BaseRepository
+from ..models.backup_model import Backup
+from .base_repository import BaseRepository
 
 class BackupRepository(BaseRepository[Backup]):
     def __init__(self, session: AsyncSession):
