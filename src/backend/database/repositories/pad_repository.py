@@ -4,12 +4,12 @@ from typing import Optional, Dict, Any
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from ..models.pad_model import Pad
+from ..models.pad_model import PadModel
 from .base_repository import BaseRepository
 
-class PadRepository(BaseRepository[Pad]):
+class PadRepository(BaseRepository[PadModel]):
     def __init__(self, session: AsyncSession):
-        super().__init__(session, Pad)
+        super().__init__(session, PadModel)
         
     async def get_pad_data_by_id(self, pad_id: UUID) -> Optional[Dict[str, Any]]:
         """Get pad data by ID"""

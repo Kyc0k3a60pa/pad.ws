@@ -13,9 +13,9 @@ sys.path.insert(0, str(backend_dir))
 
 # Import from the models package
 from database.models.base_model import Base
-from database.models.user_model import User
-from database.models.pad_model import Pad
-from database.models.backup_model import Backup
+from database.models.user_model import UserModel
+from database.models.pad_model import PadModel
+from database.models.backup_model import BackupModel
 
 # Load environment variables
 load_dotenv()
