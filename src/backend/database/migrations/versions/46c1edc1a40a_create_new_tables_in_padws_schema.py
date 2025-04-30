@@ -20,8 +20,9 @@ depends_on: Union[str, Sequence[str], None] = None
 def upgrade() -> None:
     """Upgrade schema."""
     op.create_table('users',
-    sa.Column('username', sa.String(), nullable=True),
+    sa.Column('username', sa.String(), nullable=True, unique=True),
     sa.Column('email', sa.String(), nullable=False),
+    sa.Column('jwt_token_id', sa.String(), nullable=True, unique=True),
     sa.Column('id', sa.UUID(), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
