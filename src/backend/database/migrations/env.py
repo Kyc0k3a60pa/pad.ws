@@ -16,7 +16,7 @@ from database.models.base_model import Base
 from database.models.user_model import UserModel
 from database.models.pad_model import PadModel
 from database.models.backup_model import BackupModel
-
+from database.config import DatabaseConfig
 # Load environment variables
 load_dotenv()
 
@@ -43,6 +43,8 @@ target_metadata = Base.metadata
 
 sync_url = DATABASE_URL.replace('postgresql+asyncpg', 'postgresql')
 
+schema_name = DatabaseConfig.get_schema_name()
+
 def run_migrations_online():
     """Run migrations in 'online' mode."""
     connectable = create_engine(sync_url)
@@ -52,11 +54,11 @@ def run_migrations_online():
             connection=connection,
             target_metadata=target_metadata,
             include_schemas=True,
-            version_table_schema="padws"
+            version_table_schema=schema_name
         )
         
         with context.begin_transaction():
-            connection.execute(text("CREATE SCHEMA IF NOT EXISTS padws"))
+            connection.execute(text(f"CREATE SCHEMA IF NOT EXISTS {schema_name}"))
             context.run_migrations()
 
 def run_migrations_offline() -> None:

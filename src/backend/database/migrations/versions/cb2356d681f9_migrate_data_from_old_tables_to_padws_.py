@@ -1,4 +1,4 @@
-"""Migrate data from old tables to padws schema
+"""Migrate data from old tables to app schema
 
 Revision ID: cb2356d681f9
 Revises: 46c1edc1a40a
@@ -27,7 +27,7 @@ def upgrade():
     connection = op.get_bind()
 
     # 1. Migrate users (create a user for each unique user_id in canvas_data)
-    canvas_users = connection.execute(text(f"SELECT user_id FROM {schema_name}.canvas_data")).fetchall()
+    canvas_users = connection.execute(text(f"SELECT user_id FROM canvas_data")).fetchall()
     
     for user_row in canvas_users:
         jwt_id = user_row[0]
@@ -35,7 +35,7 @@ def upgrade():
         
         # Insert into new users table
         connection.execute(
-            text("INSERT INTO padws.users (id, username, email, jwt_id, created_at, updated_at) VALUES (:id, :username, :email, :jwt_id, NOW(), NOW())"),
+            text(f"INSERT INTO {schema_name}.users (id, username, email, jwt_id, created_at, updated_at) VALUES (:id, :username, :email, :jwt_id, NOW(), NOW())"),
             {"id": str(uuid4()), "username": None, "email": migration_email, "jwt_id": jwt_id}
         )
         
@@ -48,7 +48,7 @@ def upgrade():
         
         # 2. Migrate pad data
         canvas_data = connection.execute(
-            text(f"SELECT data, updated_at FROM {schema_name}.canvas_data WHERE user_id = :user_id"),
+            text(f"SELECT data, updated_at FROM canvas_data WHERE user_id = :user_id"),
             {"user_id": jwt_id}
         ).fetchone()
         
@@ -76,7 +76,7 @@ def upgrade():
             
             # 3. Migrate backups
             backups = connection.execute(
-                text(f"SELECT canvas_data, timestamp FROM {schema_name}.canvas_backups WHERE user_id = :user_id ORDER BY timestamp"),
+                text(f"SELECT canvas_data, timestamp FROM canvas_backups WHERE user_id = :user_id ORDER BY timestamp"),
                 {"user_id": jwt_id}
             ).fetchall()
             

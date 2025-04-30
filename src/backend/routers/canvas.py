@@ -9,7 +9,6 @@ from dependencies import SessionData, require_auth, get_pad_service, get_backup_
 from database.services.pad_service import PadService
 from database.services.backup_service import BackupService
 from database.config import DatabaseConfig
-import posthog
 
 canvas_router = APIRouter()
 

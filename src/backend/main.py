@@ -12,13 +12,13 @@ import posthog
 from alembic.config import Config
 from alembic import command
 
-from db import init_db
 from config import STATIC_DIR, ASSETS_DIR
 from dependencies import SessionData, optional_auth
 from routers.auth import auth_router
 from routers.canvas import canvas_router
 from routers.user import user_router
 from routers.workspace import workspace_router
+from database.interface import init_db
 
 load_dotenv()
 

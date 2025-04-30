@@ -1,4 +1,4 @@
-"""Create padws schema
+"""Create app schema
 
 Revision ID: 0ed2c80b0270
 Revises: 

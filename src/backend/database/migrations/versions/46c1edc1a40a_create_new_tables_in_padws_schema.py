@@ -1,4 +1,4 @@
-"""Create new tables in padws schema
+"""Create new tables in app schema
 
 Revision ID: 46c1edc1a40a
 Revises: 0ed2c80b0270
@@ -31,7 +31,8 @@ def upgrade() -> None:
     sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('username'),
-    schema=schema_name
+    schema=schema_name,
+    if_not_exists=True,
     )
     op.create_table('pads',
     sa.Column('user_id', sa.UUID(), nullable=False),
@@ -39,9 +40,10 @@ def upgrade() -> None:
     sa.Column('id', sa.UUID(), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
-    sa.ForeignKeyConstraint(['user_id'], ['padws.users.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], [f'{schema_name}.users.id'], ),
     sa.PrimaryKeyConstraint('id'),
-    schema=schema_name
+    schema=schema_name,
+    if_not_exists=True,
     )
     op.create_table('backups',
     sa.Column('pad_id', sa.UUID(), nullable=False),
@@ -49,9 +51,10 @@ def upgrade() -> None:
     sa.Column('id', sa.UUID(), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
-    sa.ForeignKeyConstraint(['pad_id'], ['padws.pads.id'], ),
+    sa.ForeignKeyConstraint(['pad_id'], [f'{schema_name}.pads.id'], ),
     sa.PrimaryKeyConstraint('id'),
-    schema=schema_name
+    schema=schema_name,
+    if_not_exists=True,
     )
 
 

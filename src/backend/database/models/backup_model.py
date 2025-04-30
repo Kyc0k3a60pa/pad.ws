@@ -7,7 +7,7 @@ from ..config import DatabaseConfig
 schema_name = DatabaseConfig.get_schema_name()
 
 class BackupModel(TimestampedBase):
-    """Model for backups table in padws schema"""
+    """Model for backups table in app schema"""
     __tablename__ = "backups"
     __table_args__ = {"schema": schema_name}
     
