@@ -15,4 +15,4 @@ class Pad(TimestampedBase):
     backups = relationship("Backup", back_populates="pad", cascade="all, delete-orphan")
     
     def __repr__(self):
-        return f"<Pad(id='{self.id}', name='{self.name}')>"
+        return f"<Pad(id='{self.id}', user_id='{self.user_id}')>"
