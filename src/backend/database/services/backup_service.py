@@ -1,5 +1,5 @@
 from uuid import UUID
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List, Dict, Any, Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -71,7 +71,7 @@ class BackupService:
             
             # Determine if we should create a backup
             should_backup = False
-            current_time = datetime.now()
+            current_time = datetime.now(timezone.utc)
             
             if latest_backup is None:
                 # No previous backup exists, so create one
