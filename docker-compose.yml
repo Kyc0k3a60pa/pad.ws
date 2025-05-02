@@ -29,13 +29,13 @@ services:
     container_name: keycloak
     command: start
     environment:
-      KC_HOSTNAME: localhost
+      KC_HOSTNAME: ${DOMAIN_RS}
       KC_HOSTNAME_PORT: ${KEYCLOAK_PORT}
       KC_HTTP_ENABLED: "true"
       KC_HOSTNAME_STRICT_BACKCHANNEL: "false"
       KC_HOSTNAME_STRICT_HTTPS: "false"
-      KC_HOSTNAME_URL: http://localhost:${KEYCLOAK_PORT}
-      KC_HOSTNAME_ADMIN_URL: http://localhost:${KEYCLOAK_PORT}
+      KC_HOSTNAME_URL: ${KEYCLOAK_URL}
+      KC_HOSTNAME_ADMIN_URL: ${KEYCLOAK_URL}
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
       KC_PROXY: "edge"
@@ -51,8 +51,8 @@ services:
     image: ghcr.io/coder/coder:latest
     container_name: coder
     environment:
-      CODER_ACCESS_URL: http://localhost:${CODER_PORT}
-      CODER_OIDC_ISSUER_URL: http://localhost:8080/realms/${OIDC_REALM}
+      CODER_ACCESS_URL: ${CODER_URL}
+      CODER_OIDC_ISSUER_URL: ${CODER_OIDC_ISSUER_URL}
       CODER_OIDC_CLIENT_ID: ${OIDC_CLIENT_ID}
       CODER_OIDC_CLIENT_SECRET: ${OIDC_CLIENT_SECRET}
       CODER_OIDC_SIGN_IN_TEXT: "Sign in for pad"
@@ -76,9 +76,9 @@ services:
       - ASSETS_DIR=/app/frontend/dist/assets
       - OIDC_CLIENT_ID=${OIDC_CLIENT_ID}
       - OIDC_CLIENT_SECRET=${OIDC_CLIENT_SECRET}
-      - OIDC_SERVER_URL=http://localhost:${KEYCLOAK_PORT}
+      - OIDC_SERVER_URL=${KEYCLOAK_URL}
       - OIDC_REALM=${OIDC_REALM}
-      - REDIRECT_URI=http://localhost:${APP_PORT}/auth/callback
+      - REDIRECT_URI=${APP_URL}/auth/callback
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
@@ -88,9 +88,10 @@ services:
       - REDIS_PORT=6379
       - REDIS_PASSWORD=${REDIS_PASSWORD}
       - CODER_API_KEY=${CODER_API_KEY}
-      - CODER_URL=http://localhost:${CODER_PORT}
+      - CODER_URL=${CODER_URL}
       - CODER_TEMPLATE_ID=${CODER_TEMPLATE_ID}
       - CODER_DEFAULT_ORGANIZATION=${CODER_DEFAULT_ORGANIZATION}
+      - API_WORKERS=${API_WORKERS}
     network_mode: host
 
 volumes:
